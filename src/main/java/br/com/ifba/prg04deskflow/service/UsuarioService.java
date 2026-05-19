@@ -13,7 +13,7 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    //Salvar usuario
+    //Salvar usuario, com validações
     public Usuario salvar(Usuario usuario){
         if(usuarioRepository.existsByEmail(usuario.getEmail())){
             throw new RuntimeException("O Email ja existe no sistema");
@@ -37,6 +37,7 @@ public class UsuarioService {
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario não encontrado. ID:" + id));
 
+        //Valida se o novo email ja esta em uso por outro usuario
         if(!usuarioExistente.getEmail().equals(novoUsuario.getEmail())){
             if(usuarioRepository.existsByEmail(novoUsuario.getEmail())){
                 throw new RuntimeException("Email ja esta em uso");
