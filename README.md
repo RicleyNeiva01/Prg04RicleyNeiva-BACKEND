@@ -94,19 +94,27 @@ O back-end do DeskFlow é responsável pela lógica de negócio da aplicação, 
         │       └── 📂 com
         │           └── 📂 ifba
         │               └── 📂 prg04deskflow
-        │                   ├── 📂 controller
-        │                   │   └── 📄 UsuarioController.java
+        │                   ├── 📂 infrastructure
+        │                   │   ├── 📂 exception
+        │                   │   │   ├── 📄 ApiExceptionHandler.java
+        │                   │   │   ├── 📄 BusinessException.java
+        │                   │   │   └── 📄 ErrorResponse.java
+        │                   │   └── 📂 mapper
+        │                   │       └── 📄 ObjectMapperUtil.java
         │                   │
-        │                   ├── 📂 model
-        │                   │   └── 📄 Usuario.java
-        │                   │
-        │                   ├── 📂 repository
-        │                   │   └── 📄 UsuarioRepository.java
-        │                   │
-        │                   ├── 📂 service
-        │                   │   └── 📄 UsuarioService.java
-        │                   │
-        │                   └── 📄 DeskflowBackendApplication.java
+        │                   └── 📂 usuario
+        │                       ├── 📂 controller
+        │                       │   └── 📄 UsuarioController.java
+        │                       ├── 📂 dto
+        │                       │   ├── 📄 UsuarioGetResponseDTO.java
+        │                       │   └── 📄 UsuarioPostRequestDTO.java
+        │                       ├── 📂 model
+        │                       │   └── 📄 Usuario.java
+        │                       ├── 📂 repository
+        │                       │   └── 📄 UsuarioRepository.java
+        │                       └── 📂 service
+        │                           ├── 📄 UsuarioIService.java
+        │                           └── 📄 UsuarioService.java
         │
         └── 📂 resources
             └── 📄 application.properties
@@ -122,6 +130,7 @@ O back-end do DeskFlow é responsável pela lógica de negócio da aplicação, 
 - 🔵 H2 Database
 - 🌐 Spring Web
 - 🔧 Lombok
+- 🗺️ ModelMapper
 
 ---
 
