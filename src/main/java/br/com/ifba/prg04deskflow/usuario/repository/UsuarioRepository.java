@@ -1,6 +1,6 @@
-package br.com.ifba.prg04deskflow.repository;
+package br.com.ifba.prg04deskflow.usuario.repository;
 
-import br.com.ifba.prg04deskflow.model.Usuario;
+import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

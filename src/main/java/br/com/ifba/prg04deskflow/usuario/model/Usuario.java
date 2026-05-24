@@ -1,4 +1,4 @@
-package br.com.ifba.prg04deskflow.model;
+package br.com.ifba.prg04deskflow.usuario.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
