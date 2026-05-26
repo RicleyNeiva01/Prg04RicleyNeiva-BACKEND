@@ -1,11 +1,9 @@
 package br.com.ifba.prg04deskflow.usuario.service;
 
 import br.com.ifba.prg04deskflow.infrastructure.exception.BusinessException;
-import br.com.ifba.prg04deskflow.infrastructure.mapper.ObjectMapperUtil;
-import br.com.ifba.prg04deskflow.usuario.dto.UsuarioGetResponseDTO;
-import br.com.ifba.prg04deskflow.usuario.dto.UsuarioPostRequestDTO;
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import br.com.ifba.prg04deskflow.usuario.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,61 +14,55 @@ import java.util.List;
 public class UsuarioService implements UsuarioIService{
 
     private final UsuarioRepository usuarioRepository;
-    private final ObjectMapperUtil objectMapperUtil;
 
     //Salvar usuario, com validações
     @Override
-    public UsuarioGetResponseDTO salvar(UsuarioPostRequestDTO dto){
-        if(usuarioRepository.existsByEmail(dto.getEmail())){
+    @Transactional
+    public Usuario save(Usuario usuario){
+        if(usuarioRepository.existsByEmail(usuario.getEmail())){
             throw new BusinessException("O Email ja existe no sistema");
         }
 
-        Usuario usuario = objectMapperUtil.map(dto, Usuario.class);
-        Usuario salvo = usuarioRepository.save(usuario);
-
-        return objectMapperUtil.map(salvo, UsuarioGetResponseDTO.class);
+        return usuarioRepository.save(usuario);
     }
 
     //Lista todos os usuarios
     @Override
-    public List <UsuarioGetResponseDTO> listarTodos(){
-        return usuarioRepository.findAll()
-                .stream()
-                .map(u -> objectMapperUtil.map(u, UsuarioGetResponseDTO.class))
-                .toList();
+    public List <Usuario> findAll(){
+       return usuarioRepository.findAll();
     }
 
     //Busca um ID
     @Override
-    public UsuarioGetResponseDTO buscarPorId(Long id){
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Usuario não encontrado. ID:" + id));
-
-        return objectMapperUtil.map(usuario, UsuarioGetResponseDTO.class);
+    public Usuario findById(Long id){
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Usuario não encontrado. ID: " + id));
     }
 
     //Atualizar usuario
     @Override
-    public UsuarioGetResponseDTO atualizar(Long id, UsuarioPostRequestDTO dto){
+    @Transactional
+    public Usuario update(Long id, Usuario usuario){
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuario não encontrado. ID:" + id));
 
-        if(!usuarioExistente.getEmail().equals(dto.getEmail())){
-            if(usuarioRepository.existsByEmail(dto.getEmail())){
+        if(!usuarioExistente.getEmail().equals(usuario.getEmail())){
+            if(usuarioRepository.existsByEmail(usuario.getEmail())){
                 throw new BusinessException("Email ja esta em uso");
             }
         }
 
-        usuarioExistente.setNome(dto.getNome());
-        usuarioExistente.setEmail(dto.getEmail());
-        usuarioExistente.setSenha(dto.getSenha());
+        usuarioExistente.setNome(usuario.getNome());
+        usuarioExistente.setEmail(usuario.getEmail());
+        usuarioExistente.setSenha(usuario.getSenha());
 
-        return objectMapperUtil.map(usuarioRepository.save(usuarioExistente), UsuarioGetResponseDTO.class);
+        return usuarioRepository.save(usuarioExistente);
     }
 
     //Deletar usuario
     @Override
-    public void deletar(Long id){
+    @Transactional
+    public void delete(Long id){
         if(!usuarioRepository.existsById(id))
             throw new BusinessException("Usuario nao encontrado. ID:" + id);
         usuarioRepository.deleteById(id);

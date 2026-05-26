@@ -6,6 +6,7 @@ import org.modelmapper.config.Configuration;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
+//Classe que faz a conversão
 @RequiredArgsConstructor
 @Component
 public class ObjectMapperUtil {

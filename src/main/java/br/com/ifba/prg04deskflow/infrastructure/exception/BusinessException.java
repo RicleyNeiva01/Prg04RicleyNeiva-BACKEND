@@ -2,6 +2,7 @@ package br.com.ifba.prg04deskflow.infrastructure.exception;
 
 import java.io.Serial;
 
+//Classe que recebe o chamado da exceção
 public class BusinessException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;

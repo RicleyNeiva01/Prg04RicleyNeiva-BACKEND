@@ -1,7 +1,5 @@
 package br.com.ifba.prg04deskflow.usuario.service;
 
-import br.com.ifba.prg04deskflow.usuario.dto.UsuarioGetResponseDTO;
-import br.com.ifba.prg04deskflow.usuario.dto.UsuarioPostRequestDTO;
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 
 import java.util.List;
@@ -9,17 +7,17 @@ import java.util.List;
 public interface UsuarioIService {
 
     //Salvar usuario
-    UsuarioGetResponseDTO salvar(UsuarioPostRequestDTO dto);
+    Usuario save(Usuario usuario);
 
     //Listar usuarios
-    List <UsuarioGetResponseDTO> listarTodos();
+    List <Usuario> findAll();
 
     //Buscar usuarios
-    UsuarioGetResponseDTO buscarPorId(Long id);
+    Usuario findById(Long id);
 
     //Atualizar usuarios
-    UsuarioGetResponseDTO atualizar(Long id, UsuarioPostRequestDTO dto);
+    Usuario update(Long id, Usuario usuario);
 
     //Deletar usuarios
-    void deletar(Long id);
+    void delete(Long id);
 }
