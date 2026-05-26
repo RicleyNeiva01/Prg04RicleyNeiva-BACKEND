@@ -15,7 +15,7 @@ public class UsuarioService implements UsuarioIService{
 
     private final UsuarioRepository usuarioRepository;
 
-    //Salvar usuario, com validações
+    //Salvar usuario, com validações e Transaction
     @Override
     @Transactional
     public Usuario save(Usuario usuario){
@@ -41,7 +41,7 @@ public class UsuarioService implements UsuarioIService{
 
     //Atualizar usuario
     @Override
-    @Transactional
+    @Transactional //Transação
     public Usuario update(Long id, Usuario usuario){
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuario não encontrado. ID:" + id));
@@ -61,7 +61,7 @@ public class UsuarioService implements UsuarioIService{
 
     //Deletar usuario
     @Override
-    @Transactional
+    @Transactional //Transação
     public void delete(Long id){
         if(!usuarioRepository.existsById(id))
             throw new BusinessException("Usuario nao encontrado. ID:" + id);

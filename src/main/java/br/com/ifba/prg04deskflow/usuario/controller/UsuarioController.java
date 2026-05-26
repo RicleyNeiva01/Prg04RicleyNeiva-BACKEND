@@ -5,6 +5,7 @@ import br.com.ifba.prg04deskflow.usuario.dto.UsuarioGetResponseDTO;
 import br.com.ifba.prg04deskflow.usuario.dto.UsuarioPostRequestDTO;
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import br.com.ifba.prg04deskflow.usuario.service.UsuarioIService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UsuarioController {
     //Criar usuario
     // POST /usuarios — cria novo usuário, retorna 201
     @PostMapping
-    public ResponseEntity<UsuarioGetResponseDTO> save(@RequestBody UsuarioPostRequestDTO dto){
+    public ResponseEntity<UsuarioGetResponseDTO> save(@RequestBody @Valid UsuarioPostRequestDTO dto){
         Usuario usuario = objectMapperUtil.map(dto, Usuario.class);
         Usuario salvo = usuarioService.save(usuario);
 
@@ -54,7 +55,7 @@ public class UsuarioController {
     //Atualizar usuario
     // PUT /usuarios/{id} — atualiza usuário, retorna 200 ou 400
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioGetResponseDTO> update(@PathVariable Long id, @RequestBody UsuarioPostRequestDTO dto){
+    public ResponseEntity<UsuarioGetResponseDTO> update(@PathVariable Long id, @RequestBody @Valid UsuarioPostRequestDTO dto){
         Usuario usuario = objectMapperUtil.map(dto, Usuario.class);
         Usuario atualizado = usuarioService.update(id, usuario);
 
