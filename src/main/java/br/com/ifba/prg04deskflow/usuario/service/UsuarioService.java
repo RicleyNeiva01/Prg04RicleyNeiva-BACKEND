@@ -5,9 +5,9 @@ import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import br.com.ifba.prg04deskflow.usuario.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +28,8 @@ public class UsuarioService implements UsuarioIService{
 
     //Lista todos os usuarios
     @Override
-    public List <Usuario> findAll(){
-       return usuarioRepository.findAll();
+    public Page<Usuario> findAll(Pageable pageable){
+        return usuarioRepository.findAll(pageable);
     }
 
     //Busca um ID

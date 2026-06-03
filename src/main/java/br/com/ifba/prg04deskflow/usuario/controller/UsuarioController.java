@@ -7,11 +7,12 @@ import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import br.com.ifba.prg04deskflow.usuario.service.UsuarioIService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -23,7 +24,7 @@ public class UsuarioController {
 
     //Criar usuario
     // POST /usuarios — cria novo usuário, retorna 201
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<UsuarioGetResponseDTO> save(@RequestBody @Valid UsuarioPostRequestDTO dto){
         Usuario usuario = objectMapperUtil.map(dto, Usuario.class);
         Usuario salvo = usuarioService.save(usuario);
@@ -34,13 +35,11 @@ public class UsuarioController {
 
     //Listar usuarios
     // GET /usuarios — lista todos os usuários, retorna 200
-    @GetMapping
-    public ResponseEntity<List<UsuarioGetResponseDTO>> findAll(){
-        List<UsuarioGetResponseDTO> lista = usuarioService.findAll()
-                .stream()
-                .map(u -> objectMapperUtil.map(u, UsuarioGetResponseDTO.class))
-                .toList();
-        return ResponseEntity.ok(lista);
+    @GetMapping("/findAll")
+    public ResponseEntity<Page<UsuarioGetResponseDTO>> findAll(Pageable pageable){
+        Page<UsuarioGetResponseDTO> pagina = usuarioService.findAll(pageable)
+                .map(u -> objectMapperUtil.map(u, UsuarioGetResponseDTO.class));
+        return ResponseEntity.ok(pagina);
     }
 
     //Buscar Usuario por id

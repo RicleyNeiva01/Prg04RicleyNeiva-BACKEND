@@ -1,8 +1,8 @@
 package br.com.ifba.prg04deskflow.usuario.service;
 
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UsuarioIService {
 
@@ -10,7 +10,7 @@ public interface UsuarioIService {
     Usuario save(Usuario usuario);
 
     //Listar usuarios
-    List <Usuario> findAll();
+    Page<Usuario> findAll(Pageable pageable);
 
     //Buscar usuarios
     Usuario findById(Long id);
