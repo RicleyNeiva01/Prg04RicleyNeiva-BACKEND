@@ -13,20 +13,17 @@ public class ObjectMapperUtil {
 
     private static final ModelMapper MODEL_MAPPER;
 
-    static{
+    static {
         MODEL_MAPPER = new ModelMapper();
-    }
-
-    public <Input, Output> Output map(final Input object, final Class<Output> clazz){
 
         MODEL_MAPPER.getConfiguration()
                 .setAmbiguityIgnored(true)
                 .setMatchingStrategy(MatchingStrategies.STRICT)
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
+    }
 
-        Output c = MODEL_MAPPER.map(object, clazz);
-
-        return c;
+    public <Input, Output> Output map(final Input object, final Class<Output> clazz) {
+        return MODEL_MAPPER.map(object, clazz);
     }
 }

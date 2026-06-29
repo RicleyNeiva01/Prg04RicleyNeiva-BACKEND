@@ -19,8 +19,14 @@ public class UsuarioService implements UsuarioIService{
     @Override
     @Transactional
     public Usuario save(Usuario usuario){
+        //Validação de Email
         if(usuarioRepository.existsByEmail(usuario.getEmail())){
             throw new BusinessException("O Email ja existe no sistema");
+        }
+
+        //Validação de CPF
+        if(usuarioRepository.existsByCpf(usuario.getCpf())){
+            throw new BusinessException("O CPF já existe no sistema");
         }
 
         return usuarioRepository.save(usuario);
@@ -46,15 +52,27 @@ public class UsuarioService implements UsuarioIService{
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuario não encontrado. ID:" + id));
 
+        //Validar email se mudou
         if(!usuarioExistente.getEmail().equals(usuario.getEmail())){
             if(usuarioRepository.existsByEmail(usuario.getEmail())){
                 throw new BusinessException("Email ja esta em uso");
             }
         }
 
+        //Validar CPF se mudou
+        if(!usuarioExistente.getCpf().equals(usuario.getCpf())){
+            if(usuarioRepository.existsByCpf(usuario.getCpf())){
+                throw new BusinessException("CPF já está em uso");
+            }
+        }
+
+        //Atualizar todos os campos
         usuarioExistente.setNome(usuario.getNome());
+        usuarioExistente.setCpf(usuario.getCpf());
+        usuarioExistente.setTelefone(usuario.getTelefone());
         usuarioExistente.setEmail(usuario.getEmail());
         usuarioExistente.setSenha(usuario.getSenha());
+        usuarioExistente.setPerfil(usuario.getPerfil());
 
         return usuarioRepository.save(usuarioExistente);
     }

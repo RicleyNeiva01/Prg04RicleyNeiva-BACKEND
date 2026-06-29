@@ -24,7 +24,7 @@ public class UsuarioController {
 
     //Criar usuario
     // POST /usuarios — cria novo usuário, retorna 201
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<UsuarioGetResponseDTO> save(@RequestBody @Valid UsuarioPostRequestDTO dto){
         Usuario usuario = objectMapperUtil.map(dto, Usuario.class);
         Usuario salvo = usuarioService.save(usuario);
@@ -35,7 +35,7 @@ public class UsuarioController {
 
     //Listar usuarios
     // GET /usuarios — lista todos os usuários, retorna 200
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<Page<UsuarioGetResponseDTO>> findAll(Pageable pageable){
         Page<UsuarioGetResponseDTO> pagina = usuarioService.findAll(pageable)
                 .map(u -> objectMapperUtil.map(u, UsuarioGetResponseDTO.class));
@@ -65,7 +65,6 @@ public class UsuarioController {
     // DELETE /usuarios/{id} — deleta usuário, retorna 204 ou 404
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-
             usuarioService.delete(id);
 
             return ResponseEntity.noContent().build();

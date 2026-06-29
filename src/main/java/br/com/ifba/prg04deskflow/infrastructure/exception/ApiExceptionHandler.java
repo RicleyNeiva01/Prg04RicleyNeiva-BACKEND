@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     // ==========================
     // BUSINESS EXCEPTION
     // ==========================
-    @org.springframework.web.bind.annotation.ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(
             final BusinessException businessException,
             final WebRequest request) {
@@ -39,6 +40,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 businessException,
                 mensagemErro,
                 HttpStatus.BAD_REQUEST,
+                request);
+    }
+
+    // ==========================
+    // GENERIC EXCEPTION (NOVO)
+    // ==========================
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleGenericException(
+            Exception ex,
+            WebRequest request) {
+
+        logger.error("Erro inesperado", ex);
+
+        return construirMensagemDeErro(
+                ex,
+                "Erro interno no servidor",
+                HttpStatus.INTERNAL_SERVER_ERROR,
                 request);
     }
 
