@@ -26,4 +26,16 @@ public class Usuario extends Pessoa {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PerfilUsuario perfil;
+
+    // Adicione este campo junto com os outros (email, senha, etc)
+    @Column(nullable = false)
+    private Boolean ativo;
+
+    // Usuario ja nasce ativo
+    @PrePersist
+    protected void onCreate() {
+        if (this.ativo == null) {
+            this.ativo = true;
+        }
+    }
 }

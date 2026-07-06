@@ -1,6 +1,8 @@
 package br.com.ifba.prg04deskflow.usuario.repository;
 
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,5 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     //Verifica se o cpf ja existe
     boolean existsByCpf(String cpf);
+
+    Page<Usuario> findByAtivoTrue(Pageable pageable);
 
 }

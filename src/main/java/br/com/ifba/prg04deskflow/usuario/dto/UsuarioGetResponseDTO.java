@@ -22,4 +22,6 @@ public class UsuarioGetResponseDTO {
     private String telefone;
 
     private PerfilUsuario perfil;
+
+    private Boolean ativo;
 }

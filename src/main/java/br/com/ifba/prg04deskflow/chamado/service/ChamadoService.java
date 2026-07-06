@@ -82,9 +82,17 @@ public class ChamadoService implements ChamadoIService{
         }
 
         // Atualiza campos simples
-        chamadoExistente.setTitulo(chamado.getTitulo());
-        chamadoExistente.setDescricao(chamado.getDescricao());
-        chamadoExistente.setPrioridade(chamado.getPrioridade());
+        if (chamado.getTitulo() != null) {
+            chamadoExistente.setTitulo(chamado.getTitulo());
+        }
+
+        if (chamado.getDescricao() != null) {
+            chamadoExistente.setDescricao(chamado.getDescricao());
+        }
+
+        if (chamado.getPrioridade() != null) {
+            chamadoExistente.setPrioridade(chamado.getPrioridade());
+        }
 
         return chamadoRepository.save(chamadoExistente);
     }

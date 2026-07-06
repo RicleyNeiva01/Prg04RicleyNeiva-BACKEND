@@ -35,7 +35,8 @@ public class UsuarioService implements UsuarioIService{
     //Lista todos os usuarios
     @Override
     public Page<Usuario> findAll(Pageable pageable){
-        return usuarioRepository.findAll(pageable);
+        // Retorna apenas quem está com ativo
+        return usuarioRepository.findByAtivoTrue(pageable);
     }
 
     //Busca um ID
@@ -51,6 +52,10 @@ public class UsuarioService implements UsuarioIService{
     public Usuario update(Long id, Usuario usuario){
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuario não encontrado. ID:" + id));
+
+        if(Boolean.FALSE.equals(usuarioExistente.getAtivo())){
+            throw new BusinessException("Não é possível atualizar um usuário inativo");
+        }
 
         //Validar email se mudou
         if(!usuarioExistente.getEmail().equals(usuario.getEmail())){
@@ -81,9 +86,16 @@ public class UsuarioService implements UsuarioIService{
     @Override
     @Transactional //Transação
     public void delete(Long id){
-        if(!usuarioRepository.existsById(id))
-            throw new BusinessException("Usuario nao encontrado. ID:" + id);
-        usuarioRepository.deleteById(id);
+        // Buscamos o usuário no banco
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Usuario nao encontrado. ID:" + id));
+
+        if(Boolean.FALSE.equals(usuario.getAtivo())){
+            throw new BusinessException("Usuário já está inativo");
+        }
+
+        usuario.setAtivo(false);
+        usuarioRepository.save(usuario);
     }
 
 

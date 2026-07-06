@@ -1,10 +1,10 @@
 package br.com.ifba.prg04deskflow.chamado.dto;
 
-import br.com.ifba.prg04deskflow.categoria.dto.CategoriaGetResponseDTO;
+import br.com.ifba.prg04deskflow.categoria.dto.CategoriaResumoDTO;
 import br.com.ifba.prg04deskflow.chamado.model.Prioridade;
 import br.com.ifba.prg04deskflow.chamado.model.StatusChamado;
-import br.com.ifba.prg04deskflow.tecnico.dto.TecnicoGetResponseDTO;
-import br.com.ifba.prg04deskflow.usuario.dto.UsuarioGetResponseDTO;
+import br.com.ifba.prg04deskflow.tecnico.dto.TecnicoResumoDTO;
+import br.com.ifba.prg04deskflow.usuario.dto.UsuarioResumoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,9 +30,9 @@ public class ChamadoGetResponseDTO {
 
     private Prioridade prioridade;
 
-    private UsuarioGetResponseDTO usuario;
+    private UsuarioResumoDTO usuario;
 
-    private CategoriaGetResponseDTO categoria;
+    private CategoriaResumoDTO categoria;
 
-    private TecnicoGetResponseDTO tecnico; // Quem está resolvendo o chamado
+    private TecnicoResumoDTO tecnico; // Quem está resolvendo o chamado
 }
