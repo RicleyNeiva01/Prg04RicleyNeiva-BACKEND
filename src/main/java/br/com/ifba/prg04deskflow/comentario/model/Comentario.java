@@ -1,10 +1,12 @@
 package br.com.ifba.prg04deskflow.comentario.model;
 
 import br.com.ifba.prg04deskflow.chamado.model.Chamado;
+import br.com.ifba.prg04deskflow.infrastructure.entity.PersistenceEntity;
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -14,11 +16,8 @@ import java.time.LocalDateTime;
 @Table(name = "comentarios")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comentario {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class Comentario extends PersistenceEntity {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String mensagem;

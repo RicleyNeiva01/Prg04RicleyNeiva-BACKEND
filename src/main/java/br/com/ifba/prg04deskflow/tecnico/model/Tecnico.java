@@ -3,6 +3,7 @@ package br.com.ifba.prg04deskflow.tecnico.model;
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tecnicos")
 @NoArgsConstructor
 @AllArgsConstructor
+@PrimaryKeyJoinColumn(name = "id")
 @EqualsAndHashCode(callSuper = true)
 public class Tecnico extends Usuario {
 

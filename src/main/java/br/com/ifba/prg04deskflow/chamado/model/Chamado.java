@@ -2,11 +2,13 @@ package br.com.ifba.prg04deskflow.chamado.model;
 
 import br.com.ifba.prg04deskflow.categoria.model.Categoria;
 import br.com.ifba.prg04deskflow.comentario.model.Comentario;
+import br.com.ifba.prg04deskflow.infrastructure.entity.PersistenceEntity;
 import br.com.ifba.prg04deskflow.tecnico.model.Tecnico;
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -18,11 +20,8 @@ import java.util.List;
 @Table(name = "chamados")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Chamado {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EqualsAndHashCode(callSuper = true) //Muito importante para o Lombok ler o ID herdado
+public class Chamado extends PersistenceEntity {
 
     @Column(nullable = false)
     private String titulo;
@@ -62,7 +61,9 @@ public class Chamado {
 
     @PrePersist
     protected void onCreate() {
-        this.dataAbertura = LocalDateTime.now();
+        if (this.dataAbertura == null) {
+            this.dataAbertura = LocalDateTime.now();
+        }
         if (this.status == null) {
             this.status = StatusChamado.ABERTO;
         }
