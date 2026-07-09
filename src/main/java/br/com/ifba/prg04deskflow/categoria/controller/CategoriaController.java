@@ -33,10 +33,20 @@ public class CategoriaController {
 
     // Listar categorias de forma paginada (GET /categorias)
     @GetMapping
-    public ResponseEntity<Page<CategoriaGetResponseDTO>> findAll(Pageable pageable) {
-        Page<CategoriaGetResponseDTO> pagina = categoriaService.findAll(pageable)
-                .map(cat -> objectMapperUtil.map(cat, CategoriaGetResponseDTO.class));
-        return ResponseEntity.ok(pagina);
+    public ResponseEntity<Page<CategoriaGetResponseDTO>> findAll(@RequestParam(required = false) String nome, Pageable pageable) {
+
+        Page<Categoria> categorias;
+
+        if (nome != null && !nome.isBlank()) {
+            categorias = categoriaService.findByNome(nome, pageable);
+        } else {
+            categorias = categoriaService.findAll(pageable);
+        }
+
+        Page<CategoriaGetResponseDTO> resposta = categorias.map(
+                categoria -> objectMapperUtil.map(categoria, CategoriaGetResponseDTO.class));
+
+        return ResponseEntity.ok(resposta);
     }
 
     // Buscar categoria por ID (GET /categorias/{id})

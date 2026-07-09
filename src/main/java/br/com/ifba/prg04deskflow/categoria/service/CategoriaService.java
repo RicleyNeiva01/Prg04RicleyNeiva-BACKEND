@@ -67,4 +67,9 @@ public class CategoriaService implements CategoriaIService{
         }
         categoriaRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Categoria> findByNome(String nome, Pageable pageable) {
+        return categoriaRepository.findByNomeContainingIgnoreCase(nome.trim(), pageable);
+    }
 }

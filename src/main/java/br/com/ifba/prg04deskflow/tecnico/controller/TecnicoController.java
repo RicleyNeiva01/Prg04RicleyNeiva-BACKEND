@@ -33,12 +33,20 @@ public class TecnicoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<TecnicoGetResponseDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<TecnicoGetResponseDTO>> findAll(@RequestParam(required = false) String nome, Pageable pageable) {
 
-        Page<TecnicoGetResponseDTO> pagina = tecnicoService.findAll(pageable)
-                .map(t -> objectMapperUtil.map(t, TecnicoGetResponseDTO.class));
+        Page<Tecnico> tecnicos;
 
-        return ResponseEntity.ok(pagina);
+        if (nome != null && !nome.isBlank()) {
+            tecnicos = tecnicoService.findByNome(nome, pageable);
+        } else {
+            tecnicos = tecnicoService.findAll(pageable);
+        }
+
+        Page<TecnicoGetResponseDTO> resposta = tecnicos.map(
+                tecnico -> objectMapperUtil.map(tecnico, TecnicoGetResponseDTO.class));
+
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/{id}")

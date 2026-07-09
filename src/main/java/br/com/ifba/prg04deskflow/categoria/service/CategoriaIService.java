@@ -7,12 +7,9 @@ import org.springframework.data.domain.Pageable;
 public interface CategoriaIService {
 
     Categoria save(Categoria categoria);
-
     Page<Categoria> findAll(Pageable pageable);
-
     Categoria findById(Long id);
-
     Categoria update(Long id, Categoria categoria);
-
     void delete(Long id);
+    Page<Categoria> findByNome(String nome, Pageable pageable);
 }

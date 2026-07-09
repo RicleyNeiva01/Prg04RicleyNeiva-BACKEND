@@ -82,4 +82,9 @@ public class TecnicoService implements TecnicoIService{
         }
         tecnicoRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Tecnico> findByNome(String nome, Pageable pageable) {
+        return tecnicoRepository.findByNomeContainingIgnoreCase(nome.trim(), pageable);
+    }
 }

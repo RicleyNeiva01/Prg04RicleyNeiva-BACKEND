@@ -20,4 +20,7 @@ public interface UsuarioIService {
 
     //Deletar usuarios
     void delete(Long id);
+
+    //Buscar por nome
+    Page<Usuario> findByNome(String nome, Pageable pageable);
 }

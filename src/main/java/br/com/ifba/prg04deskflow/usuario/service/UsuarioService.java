@@ -98,6 +98,11 @@ public class UsuarioService implements UsuarioIService{
         usuarioRepository.save(usuario);
     }
 
+    @Override
+    public Page<Usuario> findByNome(String nome, Pageable pageable) {
+
+        return usuarioRepository.findByNomeContainingIgnoreCase(nome.trim(), pageable);
+    }
 
 }
 

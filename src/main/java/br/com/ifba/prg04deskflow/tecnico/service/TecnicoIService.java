@@ -10,4 +10,5 @@ public interface TecnicoIService {
     Tecnico findById(Long id);
     Tecnico update(Long id, Tecnico tecnico);
     void delete(Long id);
+    Page<Tecnico> findByNome(String nome, Pageable pageable);
 }
