@@ -1,5 +1,6 @@
 package br.com.ifba.prg04deskflow.chamado.model;
 
+import br.com.ifba.prg04deskflow.atendimento.model.Atendimento;
 import br.com.ifba.prg04deskflow.categoria.model.Categoria;
 import br.com.ifba.prg04deskflow.comentario.model.Comentario;
 import br.com.ifba.prg04deskflow.infrastructure.entity.PersistenceEntity;
@@ -54,6 +55,9 @@ public class Chamado extends PersistenceEntity {
     @ManyToOne
     @JoinColumn(name = "tecnico_id")
     private Tecnico tecnico;
+
+    @OneToOne(mappedBy = "chamado", cascade = CascadeType.ALL)
+    private Atendimento atendimento;
 
     //Se o chamado for deletado, os comentarios desse chamado tambem sao deletados
     @OneToMany(mappedBy = "chamado", cascade = CascadeType.ALL, orphanRemoval = true)
