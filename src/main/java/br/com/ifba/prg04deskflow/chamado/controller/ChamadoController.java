@@ -47,10 +47,20 @@ public class ChamadoController {
 
     // Listar chamados de forma paginada (GET /chamados)
     @GetMapping
-    public ResponseEntity<Page<ChamadoGetResponseDTO>> findAll(Pageable pageable) {
-        Page<ChamadoGetResponseDTO> pagina = chamadoService.findAll(pageable)
-                .map(c -> objectMapperUtil.map(c, ChamadoGetResponseDTO.class));
-        return ResponseEntity.ok(pagina);
+    public ResponseEntity<Page<ChamadoGetResponseDTO>> findAll(@RequestParam(required = false) StatusChamado status, Pageable pageable) {
+
+        Page<Chamado> chamados;
+
+        if (status != null) {
+            chamados = chamadoService.findByStatus(status, pageable);
+        } else {
+            chamados = chamadoService.findAll(pageable);
+        }
+
+        Page<ChamadoGetResponseDTO> resposta = chamados.map(
+                chamado -> objectMapperUtil.map(chamado, ChamadoGetResponseDTO.class));
+
+        return ResponseEntity.ok(resposta);
     }
 
     // Buscar chamado por ID (GET /chamados/{id})

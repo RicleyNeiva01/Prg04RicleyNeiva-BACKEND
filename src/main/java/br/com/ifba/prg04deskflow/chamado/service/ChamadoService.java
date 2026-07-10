@@ -159,4 +159,9 @@ public class ChamadoService implements ChamadoIService{
     public Page<Chamado> findByTecnicoId(Long tecnicoId, Pageable pageable) {
         return chamadoRepository.findByTecnicoId(tecnicoId, pageable);
     }
+
+    @Override
+    public Page<Chamado> findByStatus(StatusChamado status, Pageable pageable) {
+        return chamadoRepository.findByStatus(status, pageable);
+    }
 }
