@@ -3,6 +3,7 @@ package br.com.ifba.prg04deskflow.usuario.controller;
 import br.com.ifba.prg04deskflow.infrastructure.mapper.ObjectMapperUtil;
 import br.com.ifba.prg04deskflow.usuario.dto.UsuarioGetResponseDTO;
 import br.com.ifba.prg04deskflow.usuario.dto.UsuarioPostRequestDTO;
+import br.com.ifba.prg04deskflow.usuario.dto.UsuarioPutRequestDTO;
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import br.com.ifba.prg04deskflow.usuario.service.UsuarioIService;
 import jakarta.validation.Valid;
@@ -64,7 +65,7 @@ public class UsuarioController {
     //Atualizar usuario
     // PUT /usuarios/{id} — atualiza usuário, retorna 200 ou 400
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioGetResponseDTO> update(@PathVariable Long id, @RequestBody @Valid UsuarioPostRequestDTO dto){
+    public ResponseEntity<UsuarioGetResponseDTO> update(@PathVariable Long id, @RequestBody @Valid UsuarioPutRequestDTO dto){
         Usuario usuario = objectMapperUtil.map(dto, Usuario.class);
         Usuario atualizado = usuarioService.update(id, usuario);
 

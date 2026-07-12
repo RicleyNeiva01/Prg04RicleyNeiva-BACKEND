@@ -76,7 +76,9 @@ public class UsuarioService implements UsuarioIService{
         usuarioExistente.setCpf(usuario.getCpf());
         usuarioExistente.setTelefone(usuario.getTelefone());
         usuarioExistente.setEmail(usuario.getEmail());
-        usuarioExistente.setSenha(usuario.getSenha());
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            usuarioExistente.setSenha(usuario.getSenha());
+        }
         usuarioExistente.setPerfil(usuario.getPerfil());
 
         return usuarioRepository.save(usuarioExistente);
