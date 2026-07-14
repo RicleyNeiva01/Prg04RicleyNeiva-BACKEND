@@ -23,4 +23,6 @@ public class TecnicoGetResponseDTO {
     private PerfilUsuario perfil;
 
     private String especialidade;
+
+    private Boolean ativo;
 }

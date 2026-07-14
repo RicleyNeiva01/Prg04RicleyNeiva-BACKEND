@@ -12,4 +12,8 @@ public interface TecnicoRepository extends JpaRepository<Tecnico, Long> {
     boolean existsByCpf(String cpf);
 
     Page<Tecnico> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
+
+    Page<Tecnico> findByAtivoTrue(Pageable pageable);
+
+    Page<Tecnico> findByNomeContainingIgnoreCaseAndAtivoTrue(String nome, Pageable pageable);
 }

@@ -27,14 +27,17 @@ public class TecnicoService implements TecnicoIService{
 
         // Garante que o perfil seja de Técnico antes de salvar
         tecnico.setPerfil(PerfilUsuario.TECNICO);
+        tecnico.setAtivo(true);
 
         return tecnicoRepository.save(tecnico);
     }
 
     @Override
-    public Page<Tecnico> findAll(Pageable pageable) {
-
-        return tecnicoRepository.findAll(pageable);
+    public Page<Tecnico> findAll(boolean mostrarInativos, Pageable pageable) {
+        if (mostrarInativos) {
+            return tecnicoRepository.findAll(pageable);
+        }
+        return tecnicoRepository.findByAtivoTrue(pageable);
     }
 
     @Override
@@ -77,14 +80,18 @@ public class TecnicoService implements TecnicoIService{
     @Override
     @Transactional
     public void delete(Long id) {
-        if (!tecnicoRepository.existsById(id)) {
-            throw new BusinessException("Técnico não encontrado. ID: " + id);
-        }
-        tecnicoRepository.deleteById(id);
+        Tecnico tecnico = findById(id);
+
+        tecnico.setAtivo(false);
+
+        tecnicoRepository.save(tecnico);
     }
 
     @Override
-    public Page<Tecnico> findByNome(String nome, Pageable pageable) {
-        return tecnicoRepository.findByNomeContainingIgnoreCase(nome.trim(), pageable);
+    public Page<Tecnico> findByNome(String nome, boolean mostrarInativos, Pageable pageable) {
+        if (mostrarInativos) {
+            return tecnicoRepository.findByNomeContainingIgnoreCase(nome.trim(), pageable);
+        }
+        return tecnicoRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome.trim(), pageable);
     }
 }

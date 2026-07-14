@@ -34,8 +34,12 @@ public class UsuarioService implements UsuarioIService{
 
     //Lista todos os usuarios
     @Override
-    public Page<Usuario> findAll(Pageable pageable){
-        // Retorna apenas quem está com ativo
+    public Page<Usuario> findAll(boolean mostrarInativos, Pageable pageable) {
+
+        if (mostrarInativos) {
+            return usuarioRepository.findAll(pageable);
+        }
+
         return usuarioRepository.findByAtivoTrue(pageable);
     }
 
@@ -101,9 +105,13 @@ public class UsuarioService implements UsuarioIService{
     }
 
     @Override
-    public Page<Usuario> findByNome(String nome, Pageable pageable) {
+    public Page<Usuario> findByNome(String nome, boolean mostrarInativos, Pageable pageable) {
 
-        return usuarioRepository.findByNomeContainingIgnoreCase(nome.trim(), pageable);
+        if (mostrarInativos) {
+            return usuarioRepository.findByNomeContainingIgnoreCase(nome.trim(), pageable);
+        }
+
+        return usuarioRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome.trim(), pageable);
     }
 
 }

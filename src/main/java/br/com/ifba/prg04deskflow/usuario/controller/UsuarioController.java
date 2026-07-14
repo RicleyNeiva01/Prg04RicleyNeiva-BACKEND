@@ -37,14 +37,17 @@ public class UsuarioController {
     //Listar usuarios
     // GET /usuarios — lista todos os usuários, retorna 200
     @GetMapping
-    public ResponseEntity<Page<UsuarioGetResponseDTO>> findAll(@RequestParam(required = false) String nome, Pageable pageable) {
+    public ResponseEntity<Page<UsuarioGetResponseDTO>> findAll(
+            @RequestParam(required = false) String nome,
+            @RequestParam(defaultValue = "false") boolean mostrarInativos,
+            Pageable pageable) {
 
         Page<Usuario> usuarios;
 
         if (nome != null && !nome.isBlank()) {
-            usuarios = usuarioService.findByNome(nome, pageable);
+            usuarios = usuarioService.findByNome(nome, mostrarInativos, pageable);
         } else {
-            usuarios = usuarioService.findAll(pageable);
+            usuarios = usuarioService.findAll(mostrarInativos, pageable);
         }
 
         Page<UsuarioGetResponseDTO> resposta = usuarios.map(

@@ -10,7 +10,7 @@ public interface UsuarioIService {
     Usuario save(Usuario usuario);
 
     //Listar usuarios
-    Page<Usuario> findAll(Pageable pageable);
+    Page<Usuario> findAll(boolean mostrarInativos, Pageable pageable);
 
     //Buscar usuarios
     Usuario findById(Long id);
@@ -22,5 +22,5 @@ public interface UsuarioIService {
     void delete(Long id);
 
     //Buscar por nome
-    Page<Usuario> findByNome(String nome, Pageable pageable);
+    Page<Usuario> findByNome(String nome, boolean mostrarInativos, Pageable pageable);
 }

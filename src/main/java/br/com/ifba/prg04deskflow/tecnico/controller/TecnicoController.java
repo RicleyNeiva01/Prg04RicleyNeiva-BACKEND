@@ -25,7 +25,7 @@ public class TecnicoController {
     public ResponseEntity<TecnicoGetResponseDTO> save(@RequestBody @Valid TecnicoPostRequestDTO dto){
 
         Tecnico tecnico = objectMapperUtil.map(dto, Tecnico.class);
-
+        tecnico.setAtivo(true);
         Tecnico salvo = tecnicoService.save(tecnico);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -33,14 +33,17 @@ public class TecnicoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<TecnicoGetResponseDTO>> findAll(@RequestParam(required = false) String nome, Pageable pageable) {
+    public ResponseEntity<Page<TecnicoGetResponseDTO>> findAll(
+            @RequestParam(required = false) String nome,
+            @RequestParam(defaultValue = "false") boolean mostrarInativos,
+            Pageable pageable) {
 
         Page<Tecnico> tecnicos;
 
         if (nome != null && !nome.isBlank()) {
-            tecnicos = tecnicoService.findByNome(nome, pageable);
+            tecnicos = tecnicoService.findByNome(nome, mostrarInativos, pageable);
         } else {
-            tecnicos = tecnicoService.findAll(pageable);
+            tecnicos = tecnicoService.findAll(mostrarInativos, pageable);
         }
 
         Page<TecnicoGetResponseDTO> resposta = tecnicos.map(

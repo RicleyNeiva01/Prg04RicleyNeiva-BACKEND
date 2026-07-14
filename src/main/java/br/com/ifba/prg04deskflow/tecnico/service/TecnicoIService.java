@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface TecnicoIService {
     Tecnico save(Tecnico tecnico);
-    Page<Tecnico> findAll(Pageable pageable);
+    Page<Tecnico> findAll(boolean mosrtrarInativos, Pageable pageable);
     Tecnico findById(Long id);
     Tecnico update(Long id, Tecnico tecnico);
     void delete(Long id);
-    Page<Tecnico> findByNome(String nome, Pageable pageable);
+    Page<Tecnico> findByNome(String nome, boolean mostrarInativos, Pageable pageable);
 }
