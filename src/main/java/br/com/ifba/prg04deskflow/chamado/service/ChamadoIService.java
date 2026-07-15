@@ -16,4 +16,5 @@ public interface ChamadoIService {
     Chamado atribuirTecnico(Long idChamado, Long idTecnico);
     Page<Chamado> findByTecnicoId(Long tecnicoId, Pageable pageable);
     Page<Chamado> findByStatus(StatusChamado status, Pageable pageable);
+    Page<Chamado> findByTitulo(String titulo, Pageable pageable);
 }

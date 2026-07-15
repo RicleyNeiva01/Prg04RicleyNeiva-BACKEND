@@ -164,4 +164,9 @@ public class ChamadoService implements ChamadoIService{
     public Page<Chamado> findByStatus(StatusChamado status, Pageable pageable) {
         return chamadoRepository.findByStatus(status, pageable);
     }
+
+    @Override
+    public Page<Chamado> findByTitulo(String titulo, Pageable pageable) {
+        return chamadoRepository.findByTituloContainingIgnoreCase(titulo.trim(), pageable);
+    }
 }

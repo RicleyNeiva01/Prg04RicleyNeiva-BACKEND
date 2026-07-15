@@ -13,4 +13,6 @@ public interface ChamadoRepository extends JpaRepository<Chamado, Long> {
     Page<Chamado> findByTecnicoId(Long tecnicoId, Pageable pageable);
 
     Page<Chamado> findByStatus(StatusChamado status, Pageable pageable);
+
+    Page<Chamado> findByTituloContainingIgnoreCase(String titulo, Pageable pageable);
 }

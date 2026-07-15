@@ -29,12 +29,12 @@ public class ChamadoController {
     public ResponseEntity<ChamadoGetResponseDTO> save(@RequestBody @Valid ChamadoPostRequestDTO dto) {
         Chamado chamado = objectMapperUtil.map(dto, Chamado.class);
 
-        //monta Usuario com ID
+        // monta Usuario com ID
         Usuario usuario = new Usuario();
         usuario.setId(dto.getUsuarioId());
         chamado.setUsuario(usuario);
 
-        //monta Categoria com ID
+        // monta Categoria com ID
         Categoria categoria = new Categoria();
         categoria.setId(dto.getCategoriaId());
         chamado.setCategoria(categoria);
@@ -45,13 +45,18 @@ public class ChamadoController {
                 .body(objectMapperUtil.map(salvo, ChamadoGetResponseDTO.class));
     }
 
-    // Listar chamados de forma paginada (GET /chamados)
+    // Listar chamados com filtros opcionais de Título e Status (GET /chamados)
     @GetMapping
-    public ResponseEntity<Page<ChamadoGetResponseDTO>> findAll(@RequestParam(required = false) StatusChamado status, Pageable pageable) {
+    public ResponseEntity<Page<ChamadoGetResponseDTO>> findAll(
+            @RequestParam(required = false) StatusChamado status,
+            @RequestParam(required = false) String titulo,
+            Pageable pageable) {
 
         Page<Chamado> chamados;
 
-        if (status != null) {
+        if (titulo != null && !titulo.isBlank()) {
+            chamados = chamadoService.findByTitulo(titulo, pageable);
+        } else if (status != null) {
             chamados = chamadoService.findByStatus(status, pageable);
         } else {
             chamados = chamadoService.findAll(pageable);
@@ -116,6 +121,7 @@ public class ChamadoController {
         return ResponseEntity.ok(objectMapperUtil.map(atualizado, ChamadoGetResponseDTO.class));
     }
 
+    // Buscar chamados por técnico (GET /chamados/tecnico/{tecnicoId})
     @GetMapping("/tecnico/{tecnicoId}")
     public ResponseEntity<Page<ChamadoGetResponseDTO>> findByTecnicoId(
             @PathVariable Long tecnicoId,
