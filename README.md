@@ -1,154 +1,271 @@
 # 🛠️ DeskFlow | Back-End
 
-API REST para o sistema de suporte técnico de TI DeskFlow.
+API REST desenvolvida em **Java Spring Boot** para o sistema de suporte técnico **DeskFlow**.
 
-O back-end do DeskFlow é responsável pela lógica de negócio da aplicação, gerenciamento de usuários, chamados de suporte e comunicação com o front-end.
-
----
-
-## 🎯 Responsabilidades
-
-- Gerenciamento de usuários do sistema
-- Cadastro e gerenciamento de chamados de suporte
-- Controle de técnicos e atendimentos
-- Exposição de endpoints REST
-- Persistência de dados com JPA
-- Integração com banco de dados
-- Comunicação entre front-end e back-end
+O objetivo do projeto é gerenciar usuários, técnicos, chamados, atendimentos e comentários, fornecendo uma API segura para comunicação com o Front-End desenvolvido em React.
 
 ---
 
-## 🗂️ Entidades do Sistema
-
-| Entidade      | Descrição                                          |
-|---------------|----------------------------------------------------|
-| Usuario       | Usuário cadastrado no sistema                      |
-| Chamado       | Chamado de suporte aberto pelo usuário             |
-| Tecnico       | Técnico responsável pelo atendimento               |
-| Categoria     | Categoria do chamado (rede, hardware, software...) |
-| Atendimento   | Registro do atendimento realizado                  |
-
----
-
-## 🔗 Relacionamentos
-
-| Relacionamento          | Cardinalidade |
-|-------------------------|---------------|
-| Usuario → Chamado       | 1 para N      |
-| Tecnico → Chamado       | 1 para N      |
-| Chamado → Categoria     | N para 1      |
-| Chamado → Atendimento   | 1 para 1      |
-
----
-
-## 🛣️ Rotas da API
-
-### 👤 Usuários
-
-| Método | Rota             | Descrição              |
-|--------|------------------|------------------------|
-| GET    | /usuarios        | Lista todos os usuários|
-| GET    | /usuarios/{id}   | Busca usuário por ID   |
-| POST   | /usuarios        | Cadastra um usuário    |
-| PUT    | /usuarios/{id}   | Atualiza um usuário    |
-| DELETE | /usuarios/{id}   | Remove um usuário      |
-
-### 🎫 Chamados
-
-| Método | Rota             | Descrição              |
-|--------|------------------|------------------------|
-| GET    | /chamados        | Lista todos os chamados|
-| GET    | /chamados/{id}   | Busca chamado por ID   |
-| POST   | /chamados        | Abre um chamado        |
-| PUT    | /chamados/{id}   | Atualiza um chamado    |
-| DELETE | /chamados/{id}   | Remove um chamado      |
-
-### 🔧 Técnicos
-
-| Método | Rota             | Descrição              |
-|--------|------------------|------------------------|
-| GET    | /tecnicos        | Lista todos os técnicos|
-| GET    | /tecnicos/{id}   | Busca técnico por ID   |
-| POST   | /tecnicos        | Cadastra um técnico    |
-| PUT    | /tecnicos/{id}   | Atualiza um técnico    |
-| DELETE | /tecnicos/{id}   | Remove um técnico      |
-
-### 📋 Atendimentos
-
-| Método | Rota                | Descrição                  |
-|--------|---------------------|----------------------------|
-| GET    | /atendimentos       | Lista todos os atendimentos|
-| POST   | /atendimentos       | Registra um atendimento    |
-| GET    | /atendimentos/{id}  | Busca atendimento por ID   |
-
----
-
-## 🏗️ Estrutura do Projeto
-
-```
-📦 Prg04RicleyNeiva-BACKEND
-└── 📂 src
-    └── 📂 main
-        ├── 📂 java
-        │   └── 📂 br
-        │       └── 📂 com
-        │           └── 📂 ifba
-        │               └── 📂 prg04deskflow
-        │                   ├── 📂 infrastructure
-        │                   │   ├── 📂 exception
-        │                   │   │   ├── 📄 ApiExceptionHandler.java
-        │                   │   │   ├── 📄 BusinessException.java
-        │                   │   │   └── 📄 ErrorResponse.java
-        │                   │   └── 📂 mapper
-        │                   │       └── 📄 ObjectMapperUtil.java
-        │                   │
-        │                   └── 📂 usuario
-        │                       ├── 📂 controller
-        │                       │   └── 📄 UsuarioController.java
-        │                       ├── 📂 dto
-        │                       │   ├── 📄 UsuarioGetResponseDTO.java
-        │                       │   └── 📄 UsuarioPostRequestDTO.java
-        │                       ├── 📂 model
-        │                       │   └── 📄 Usuario.java
-        │                       ├── 📂 repository
-        │                       │   └── 📄 UsuarioRepository.java
-        │                       └── 📂 service
-        │                           ├── 📄 UsuarioIService.java
-        │                           └── 📄 UsuarioService.java
-        │
-        └── 📂 resources
-            └── 📄 application.properties
-```
-
----
-
-## 🛠️ Tecnologias
+# 🚀 Tecnologias Utilizadas
 
 - ☕ Java 17
 - 🍃 Spring Boot 3
-- 🗄️ Spring Data JPA
-- 🔵 H2 Database
 - 🌐 Spring Web
-- 🔧 Lombok
-- 🗺️ ModelMapper
+- 🗄️ Spring Data JPA
+- 🐘 PostgreSQL (Supabase)
+- 🔐 Spring Security
+- 🔑 JWT (JSON Web Token)
+- 📦 Lombok
+- 🔄 ModelMapper
+- ☁️ Railway (Deploy)
 
 ---
 
-## 🧪 Testes da API
+# 📌 Funcionalidades
 
-Os endpoints da aplicação foram testados utilizando:
+## 👤 Usuários
 
-📮 **Postman**
-
-Testes realizados:
-- ✅ GET
-- ✅ POST
-- ✅ PUT
-- ✅ DELETE
+- Cadastro de usuários
+- Atualização de usuários
+- Exclusão de usuários
+- Listagem de usuários
+- Busca por ID
+- Login com autenticação JWT
+- Recuperação de senha
 
 ---
 
-## 🔗 Repositório Front-End
+## 👨‍🔧 Técnicos
 
-🖥️ **Front-End:**
-https://github.com/RicleyNeiva01/Prg04RicleyNeiva-FRONTEND
+- Cadastro
+- Atualização
+- Exclusão
+- Listagem
+- Busca por ID
+
+---
+
+## 🎫 Chamados
+
+- Abertura de chamados
+- Atualização de chamados
+- Exclusão
+- Consulta por ID
+- Listagem
+- Alteração de Status
+- Definição de prioridade
+- Associação com categoria
+- Associação com técnico responsável
+
+Status disponíveis:
+
+- ABERTO
+- EM_ANDAMENTO
+- CONCLUIDO
+- CANCELADO
+
+Prioridades:
+
+- BAIXA
+- MEDIA
+- ALTA
+- URGENTE
+
+---
+
+## 🗂️ Categorias
+
+- Cadastro
+- Atualização
+- Exclusão
+- Listagem
+
+Exemplos:
+
+- Hardware
+- Software
+- Rede
+- Impressora
+- Internet
+
+---
+
+## 💬 Comentários
+
+Cada chamado pode receber comentários durante o atendimento.
+
+Funcionalidades:
+
+- Adicionar comentário
+- Listar comentários do chamado
+- Buscar comentário por ID
+- Atualizar comentário
+- Excluir comentário
+
+---
+
+## 📋 Atendimentos
+
+O sistema registra o atendimento realizado pelo técnico responsável.
+
+Funcionalidades:
+
+- Registrar atendimento
+- Consultar atendimento
+- Atualizar atendimento
+
+---
+
+# 🔐 Segurança
+
+O projeto utiliza:
+
+- Spring Security
+- JWT Authentication
+- BCrypt Password Encoder
+
+As rotas protegidas exigem autenticação via Token JWT.
+
+Rotas públicas:
+
+- Login
+- Cadastro de usuário
+- Recuperação de senha
+
+---
+
+# 🛣️ Endpoints Principais
+
+## Autenticação
+
+| Método | Endpoint |
+|---------|----------|
+| POST | /auth/login |
+| POST | /auth/recuperar-senha |
+
+---
+
+## Usuários
+
+| Método | Endpoint |
+|---------|----------|
+| GET | /usuarios |
+| GET | /usuarios/{id} |
+| POST | /usuarios |
+| PUT | /usuarios/{id} |
+| DELETE | /usuarios/{id} |
+
+---
+
+## Técnicos
+
+| Método | Endpoint |
+|---------|----------|
+| GET | /tecnicos |
+| GET | /tecnicos/{id} |
+| POST | /tecnicos |
+| PUT | /tecnicos/{id} |
+| DELETE | /tecnicos/{id} |
+
+---
+
+## Categorias
+
+| Método | Endpoint |
+|---------|----------|
+| GET | /categorias |
+| GET | /categorias/{id} |
+| POST | /categorias |
+| PUT | /categorias/{id} |
+| DELETE | /categorias/{id} |
+
+---
+
+## Chamados
+
+| Método | Endpoint |
+|---------|----------|
+| GET | /chamados |
+| GET | /chamados/{id} |
+| POST | /chamados |
+| PUT | /chamados/{id} |
+| DELETE | /chamados/{id} |
+
+---
+
+## Comentários
+
+| Método | Endpoint |
+|---------|----------|
+| GET | /comentarios |
+| GET | /comentarios/{id} |
+| POST | /comentarios |
+| PUT | /comentarios/{id} |
+| DELETE | /comentarios/{id} |
+
+---
+
+## Atendimentos
+
+| Método | Endpoint |
+|---------|----------|
+| GET | /atendimentos |
+| GET | /atendimentos/{id} |
+| POST | /atendimentos |
+| PUT | /atendimentos/{id} |
+
+---
+
+# 🗃️ Banco de Dados
+
+O sistema utiliza:
+
+- PostgreSQL
+- Supabase
+
+Persistência realizada através do Spring Data JPA.
+
+---
+
+# ☁️ Deploy
+
+### Backend
+
+Hospedado no **Railway**
+
+### Banco
+
+Hospedado no **Supabase**
+
+---
+
+# 🧪 Testes
+
+A API foi validada utilizando:
+
+- ✅ Postman
+
+Operações testadas:
+
+- GET
+- POST
+- PUT
+- DELETE
+
+---
+
+# 🖥️ Front-End
+
+Repositório:
+
+**https://github.com/RicleyNeiva01/Prg04RicleyNeiva-FRONTEND**
+
+Deploy:
+
+**https://prg04-ricley-neiva-frontend.vercel.app**
+
+---
+
+# 👨‍💻 Desenvolvedor
+
+**Ricley Neiva**
