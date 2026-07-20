@@ -10,10 +10,12 @@ import br.com.ifba.prg04deskflow.infrastructure.mapper.ObjectMapperUtil;
 import br.com.ifba.prg04deskflow.usuario.model.Usuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -52,20 +54,13 @@ public class ChamadoController {
             @RequestParam(required = false) String titulo,
             Pageable pageable) {
 
-        Page<Chamado> chamados;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        String perfil = auth.getAuthorities().iterator().next().getAuthority();
 
-        if (titulo != null && !titulo.isBlank()) {
-            chamados = chamadoService.findByTitulo(titulo, pageable);
-        } else if (status != null) {
-            chamados = chamadoService.findByStatus(status, pageable);
-        } else {
-            chamados = chamadoService.findAll(pageable);
-        }
+        Page<Chamado> chamados = chamadoService.findChamadosByPerfil(email, perfil, status, titulo, pageable);
 
-        Page<ChamadoGetResponseDTO> resposta = chamados.map(
-                chamado -> objectMapperUtil.map(chamado, ChamadoGetResponseDTO.class));
-
-        return ResponseEntity.ok(resposta);
+        return ResponseEntity.ok(chamados.map(c -> objectMapperUtil.map(c, ChamadoGetResponseDTO.class)));
     }
 
     // Buscar chamado por ID (GET /chamados/{id})

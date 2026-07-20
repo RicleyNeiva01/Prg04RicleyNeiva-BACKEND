@@ -12,8 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/usuarios")
@@ -23,65 +23,65 @@ public class UsuarioController {
     private final UsuarioIService usuarioService;
     private final ObjectMapperUtil objectMapperUtil;
 
-    //Criar usuario
-    // POST /usuarios — cria novo usuário, retorna 201
+    // Público — qualquer um pode se cadastrar
     @PostMapping
-    public ResponseEntity<UsuarioGetResponseDTO> save(@RequestBody @Valid UsuarioPostRequestDTO dto){
+    public ResponseEntity<UsuarioGetResponseDTO> save(@RequestBody @Valid UsuarioPostRequestDTO dto) {
         Usuario usuario = objectMapperUtil.map(dto, Usuario.class);
         Usuario salvo = usuarioService.save(usuario);
-
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(objectMapperUtil.map(salvo, UsuarioGetResponseDTO.class));
     }
 
-    //Listar usuarios
-    // GET /usuarios — lista todos os usuários, retorna 200
+    // Só ADMIN
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<UsuarioGetResponseDTO>> findAll(
             @RequestParam(required = false) String nome,
             @RequestParam(defaultValue = "false") boolean mostrarInativos,
             Pageable pageable) {
 
         Page<Usuario> usuarios;
-
         if (nome != null && !nome.isBlank()) {
             usuarios = usuarioService.findByNome(nome, mostrarInativos, pageable);
         } else {
             usuarios = usuarioService.findAll(mostrarInativos, pageable);
         }
 
-        Page<UsuarioGetResponseDTO> resposta = usuarios.map(
-                usuario -> objectMapperUtil.map(usuario, UsuarioGetResponseDTO.class));
-
-        return ResponseEntity.ok(resposta);
+        return ResponseEntity.ok(usuarios.map(u -> objectMapperUtil.map(u, UsuarioGetResponseDTO.class)));
     }
 
-    //Buscar Usuario por id
-    // GET /usuarios/{id} — busca usuário por ID, retorna 200 ou 404
+    // Só ADMIN
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioGetResponseDTO> findById(@PathVariable Long id){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioGetResponseDTO> findById(@PathVariable Long id) {
         Usuario usuario = usuarioService.findById(id);
-
         return ResponseEntity.ok(objectMapperUtil.map(usuario, UsuarioGetResponseDTO.class));
     }
 
-    //Atualizar usuario
-    // PUT /usuarios/{id} — atualiza usuário, retorna 200 ou 400
+    // Só ADMIN
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioGetResponseDTO> update(@PathVariable Long id, @RequestBody @Valid UsuarioPutRequestDTO dto){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioGetResponseDTO> update(@PathVariable Long id,
+                                                        @RequestBody @Valid UsuarioPutRequestDTO dto) {
         Usuario usuario = objectMapperUtil.map(dto, Usuario.class);
         Usuario atualizado = usuarioService.update(id, usuario);
-
         return ResponseEntity.ok(objectMapperUtil.map(atualizado, UsuarioGetResponseDTO.class));
     }
 
-    //Deletar usuario
-    // DELETE /usuarios/{id} — deleta usuário, retorna 204 ou 404
+    // Só ADMIN
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-            usuarioService.delete(id);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        usuarioService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
-            return ResponseEntity.noContent().build();
+    // Só ADMIN
+    @PutMapping("/{id}/reativar")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> reativar(@PathVariable Long id) {
+        usuarioService.reativar(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

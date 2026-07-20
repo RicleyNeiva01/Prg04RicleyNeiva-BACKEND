@@ -17,4 +17,14 @@ public interface ChamadoIService {
     Page<Chamado> findByTecnicoId(Long tecnicoId, Pageable pageable);
     Page<Chamado> findByStatus(StatusChamado status, Pageable pageable);
     Page<Chamado> findByTitulo(String titulo, Pageable pageable);
+    public Page<Chamado> findByUsuarioId(Long usuarioId, Pageable pageable);
+    public Page<Chamado> findByUsuarioIdAndStatus(Long usuarioId, StatusChamado status, Pageable pageable);
+    public Page<Chamado> findByUsuarioIdAndTitulo(Long usuarioId, String titulo, Pageable pageable);
+    Page<Chamado> findChamadosByPerfil(String email, String perfil, StatusChamado status, String titulo, Pageable pageable);
+    long countTotal();
+    long countByStatus(StatusChamado status);
+    long countByTecnicoId(Long tecnicoId);
+    long countByTecnicoIdAndStatus(Long tecnicoId, StatusChamado status);
+    long countByUsuarioId(Long usuarioId);
+    long countByUsuarioIdAndStatus(Long usuarioId, StatusChamado status);
 }

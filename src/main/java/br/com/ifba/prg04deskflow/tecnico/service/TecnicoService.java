@@ -94,4 +94,14 @@ public class TecnicoService implements TecnicoIService{
         }
         return tecnicoRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome.trim(), pageable);
     }
+
+    @Override
+    @Transactional
+    public void reativarTecnico(Long id) {
+        Tecnico tecnico = tecnicoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Técnico não encontrado com o ID: " + id));
+
+        tecnico.setAtivo(true); // Ou o nome do campo que você usa para controlar se está ativo (ex: status, habilitado, etc)
+        tecnicoRepository.save(tecnico);
+    }
 }

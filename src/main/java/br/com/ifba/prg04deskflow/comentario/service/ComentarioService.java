@@ -43,6 +43,11 @@ public class ComentarioService implements ComentarioIService{
         Chamado chamado = chamadoRepository.findById(idChamado)
                 .orElseThrow(() -> new BusinessException("Chamado não encontrado. ID: " + idChamado));
 
+        //Bloqueia se o chamado ja estiver sido RESOLVIDO
+        if (chamado.getStatus() != null && "RESOLVIDO".equalsIgnoreCase(chamado.getStatus().toString())) {
+            throw new BusinessException("Não é possível adicionar comentários a um chamado que já está resolvido.");
+        }
+
         // Vincula as entidades validadas ao comentário
         comentario.setUsuario(usuario);
         comentario.setChamado(chamado);

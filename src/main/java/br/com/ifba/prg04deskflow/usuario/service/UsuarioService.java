@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,21 +15,18 @@ import org.springframework.stereotype.Service;
 public class UsuarioService implements UsuarioIService{
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder; // adiciona isso
 
-    //Salvar usuario, com validações e Transaction
     @Override
     @Transactional
-    public Usuario save(Usuario usuario){
-        //Validação de Email
-        if(usuarioRepository.existsByEmail(usuario.getEmail())){
+    public Usuario save(Usuario usuario) {
+        if (usuarioRepository.existsByEmail(usuario.getEmail()))
             throw new BusinessException("O Email ja existe no sistema");
-        }
 
-        //Validação de CPF
-        if(usuarioRepository.existsByCpf(usuario.getCpf())){
+        if (usuarioRepository.existsByCpf(usuario.getCpf()))
             throw new BusinessException("O CPF já existe no sistema");
-        }
 
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha())); // adiciona isso
         return usuarioRepository.save(usuario);
     }
 
@@ -53,37 +51,29 @@ public class UsuarioService implements UsuarioIService{
     //Atualizar usuario
     @Override
     @Transactional //Transação
-    public Usuario update(Long id, Usuario usuario){
+    public Usuario update(Long id, Usuario usuario) {
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Usuario não encontrado. ID:" + id));
 
-        if(Boolean.FALSE.equals(usuarioExistente.getAtivo())){
+        if (Boolean.FALSE.equals(usuarioExistente.getAtivo()))
             throw new BusinessException("Não é possível atualizar um usuário inativo");
-        }
 
-        //Validar email se mudou
-        if(!usuarioExistente.getEmail().equals(usuario.getEmail())){
-            if(usuarioRepository.existsByEmail(usuario.getEmail())){
+        if (!usuarioExistente.getEmail().equals(usuario.getEmail()))
+            if (usuarioRepository.existsByEmail(usuario.getEmail()))
                 throw new BusinessException("Email ja esta em uso");
-            }
-        }
 
-        //Validar CPF se mudou
-        if(!usuarioExistente.getCpf().equals(usuario.getCpf())){
-            if(usuarioRepository.existsByCpf(usuario.getCpf())){
+        if (!usuarioExistente.getCpf().equals(usuario.getCpf()))
+            if (usuarioRepository.existsByCpf(usuario.getCpf()))
                 throw new BusinessException("CPF já está em uso");
-            }
-        }
 
-        //Atualizar todos os campos
         usuarioExistente.setNome(usuario.getNome());
         usuarioExistente.setCpf(usuario.getCpf());
         usuarioExistente.setTelefone(usuario.getTelefone());
         usuarioExistente.setEmail(usuario.getEmail());
-        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
-            usuarioExistente.setSenha(usuario.getSenha());
-        }
         usuarioExistente.setPerfil(usuario.getPerfil());
+
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank())
+            usuarioExistente.setSenha(passwordEncoder.encode(usuario.getSenha())); // criptografa aqui também
 
         return usuarioRepository.save(usuarioExistente);
     }
@@ -112,6 +102,23 @@ public class UsuarioService implements UsuarioIService{
         }
 
         return usuarioRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome.trim(), pageable);
+    }
+
+    @Override
+    @Transactional // Garante a transação segura com o banco de dados
+    public void reativar(Long id) {
+        // Busca o usuário no banco ou lança erro se não existir
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado. ID: " + id));
+
+        // Validação de segurança: se já estiver ativo, não faz nada
+        if (Boolean.TRUE.equals(usuario.getAtivo())) {
+            throw new BusinessException("O usuário já está ativo.");
+        }
+
+        // Altera para ativo e salva
+        usuario.setAtivo(true);
+        usuarioRepository.save(usuario);
     }
 
 }

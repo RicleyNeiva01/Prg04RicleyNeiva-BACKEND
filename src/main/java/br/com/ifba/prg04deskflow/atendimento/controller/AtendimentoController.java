@@ -2,6 +2,7 @@ package br.com.ifba.prg04deskflow.atendimento.controller;
 
 import br.com.ifba.prg04deskflow.atendimento.dto.AtendimentoGetResponseDTO;
 import br.com.ifba.prg04deskflow.atendimento.dto.AtendimentoPostRequestDTO;
+import br.com.ifba.prg04deskflow.atendimento.dto.AtendimentoPutRequestDTO;
 import br.com.ifba.prg04deskflow.atendimento.model.Atendimento;
 import br.com.ifba.prg04deskflow.atendimento.service.AtendimentoIService;
 import br.com.ifba.prg04deskflow.chamado.model.Chamado;
@@ -63,7 +64,7 @@ public class AtendimentoController {
 
     //Atualizar Atendimento
     @PutMapping("/{id}")
-    public ResponseEntity<AtendimentoGetResponseDTO> update(@PathVariable Long id, @RequestBody @Valid AtendimentoPostRequestDTO dto) {
+    public ResponseEntity<AtendimentoGetResponseDTO> update(@PathVariable Long id, @RequestBody @Valid AtendimentoPutRequestDTO dto) {
 
         Atendimento atendimento = objectMapperUtil.map(dto, Atendimento.class);
 

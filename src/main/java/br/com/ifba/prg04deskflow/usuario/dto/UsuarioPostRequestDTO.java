@@ -28,7 +28,7 @@ public class UsuarioPostRequestDTO {
     //Telefone
     @JsonProperty(value = "telefone")
     @NotBlank(message = "Telefone é obrigatório")
-    private String telefone;
+    private String telefone ;
 
     //Email
     @NotBlank(message = "Email é obrigatório")

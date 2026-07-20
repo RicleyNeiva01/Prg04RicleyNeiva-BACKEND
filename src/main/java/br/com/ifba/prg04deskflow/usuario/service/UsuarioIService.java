@@ -23,4 +23,7 @@ public interface UsuarioIService {
 
     //Buscar por nome
     Page<Usuario> findByNome(String nome, boolean mostrarInativos, Pageable pageable);
+
+    void reativar(Long id);
+
 }

@@ -169,4 +169,84 @@ public class ChamadoService implements ChamadoIService{
     public Page<Chamado> findByTitulo(String titulo, Pageable pageable) {
         return chamadoRepository.findByTituloContainingIgnoreCase(titulo.trim(), pageable);
     }
+
+    @Override
+    public Page<Chamado> findByUsuarioId(Long usuarioId, Pageable pageable) {
+        return chamadoRepository.findByUsuarioId(usuarioId, pageable);
+    }
+
+    @Override
+    public Page<Chamado> findByUsuarioIdAndStatus(Long usuarioId, StatusChamado status, Pageable pageable) {
+        return chamadoRepository.findByUsuarioIdAndStatus(usuarioId, status, pageable);
+    }
+
+    @Override
+    public Page<Chamado> findByUsuarioIdAndTitulo(Long usuarioId, String titulo, Pageable pageable) {
+        return chamadoRepository.findByUsuarioIdAndTituloContainingIgnoreCase(usuarioId, titulo, pageable);
+    }
+
+    @Override
+    public Page<Chamado> findChamadosByPerfil(String email, String perfil, StatusChamado status, String titulo, Pageable pageable) {
+
+        if ("ROLE_USUARIO_COMUM".equals(perfil)) {
+            Usuario usuario = usuarioRepository.findByEmail(email)
+                    .orElseThrow(() -> new BusinessException("Usuário não encontrado."));
+            Long usuarioId = usuario.getId();
+
+            if (titulo != null && !titulo.isBlank())
+                return chamadoRepository.findByUsuarioIdAndTituloContainingIgnoreCase(usuarioId, titulo, pageable);
+            if (status != null)
+                return chamadoRepository.findByUsuarioIdAndStatus(usuarioId, status, pageable);
+            return chamadoRepository.findByUsuarioId(usuarioId, pageable);
+        }
+
+        if ("ROLE_TECNICO".equals(perfil)) {
+            Tecnico tecnico = tecnicoRepository.findByEmail(email)
+                    .orElseThrow(() -> new BusinessException("Técnico não encontrado."));
+            Long tecnicoId = tecnico.getId();
+
+            if (titulo != null && !titulo.isBlank())
+                return chamadoRepository.findByTecnicoIdAndTituloContainingIgnoreCase(tecnicoId, titulo, pageable);
+            if (status != null)
+                return chamadoRepository.findByTecnicoIdAndStatus(tecnicoId, status, pageable);
+            return chamadoRepository.findByTecnicoId(tecnicoId, pageable);
+        }
+
+        // ROLE_ADMIN — vê tudo
+        if (titulo != null && !titulo.isBlank())
+            return chamadoRepository.findByTituloContainingIgnoreCase(titulo.trim(), pageable);
+        if (status != null)
+            return chamadoRepository.findByStatus(status, pageable);
+        return chamadoRepository.findAll(pageable);
+    }
+
+    @Override
+    public long countTotal() {
+        return chamadoRepository.count();
+    }
+
+    @Override
+    public long countByStatus(StatusChamado status) {
+        return chamadoRepository.countByStatus(status);
+    }
+
+    @Override
+    public long countByTecnicoId(Long tecnicoId) {
+        return chamadoRepository.countByTecnicoId(tecnicoId);
+    }
+
+    @Override
+    public long countByTecnicoIdAndStatus(Long tecnicoId, StatusChamado status) {
+        return chamadoRepository.countByTecnicoIdAndStatus(tecnicoId, status);
+    }
+
+    @Override
+    public long countByUsuarioId(Long usuarioId) {
+        return chamadoRepository.countByUsuarioId(usuarioId);
+    }
+
+    @Override
+    public long countByUsuarioIdAndStatus(Long usuarioId, StatusChamado status) {
+        return chamadoRepository.countByUsuarioIdAndStatus(usuarioId, status);
+    }
 }
