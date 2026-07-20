@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class UsuarioService implements UsuarioIService{
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder; // adiciona isso
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional

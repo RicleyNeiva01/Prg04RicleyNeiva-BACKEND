@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class TecnicoService implements TecnicoIService{
 
     private final TecnicoRepository tecnicoRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -52,7 +54,7 @@ public class TecnicoService implements TecnicoIService{
     public Tecnico update(Long id, Tecnico tecnicoAlterado) {
         Tecnico tecnicoExistente = findById(id);
 
-        //garante que continua sendo técnico
+        // Garante que continua sendo técnico
         tecnicoExistente.setPerfil(PerfilUsuario.TECNICO);
 
         if (!tecnicoExistente.getCpf().equals(tecnicoAlterado.getCpf()) &&
@@ -66,9 +68,9 @@ public class TecnicoService implements TecnicoIService{
         tecnicoExistente.setTelefone(tecnicoAlterado.getTelefone());
         tecnicoExistente.setEmail(tecnicoAlterado.getEmail());
 
-        // Só atualiza a senha se uma nova for enviada
+        // Só atualiza a senha se uma nova for enviada (AGORA COM CRIPTOGRAFIA 🔒)
         if (tecnicoAlterado.getSenha() != null && !tecnicoAlterado.getSenha().isBlank()) {
-            tecnicoExistente.setSenha(tecnicoAlterado.getSenha());
+            tecnicoExistente.setSenha(passwordEncoder.encode(tecnicoAlterado.getSenha()));
         }
 
         // Atualiza o campo específico do Técnico

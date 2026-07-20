@@ -27,7 +27,6 @@ public class Usuario extends Pessoa {
     @Column(nullable = false)
     private PerfilUsuario perfil;
 
-    // Adicione este campo junto com os outros (email, senha, etc)
     @Column(nullable = false)
     private Boolean ativo;
 
