@@ -30,6 +30,9 @@ public class Usuario extends Pessoa {
     @Column(nullable = false)
     private Boolean ativo;
 
+    @Column(name = "codigo_recuperacao")
+    private String codigoRecuperacao;
+
     // Usuario ja nasce ativo
     @PrePersist
     protected void onCreate() {
